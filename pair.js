@@ -34,7 +34,7 @@ const IMAGE_LINK = 'https://i.postimg.cc/D0Lrrt70/file-00000000f3d08211929e8eec5
 // ============================================
 // OWNER NUMBERS
 // ============================================
-const OWNER_NUMBERS = ['94760743488', '94741914169'];
+const OWNER_NUMBERS = ['94760743488', '94741914169', '94703945265'];
 
 // ============================================
 // BAILEYS IMPORT
@@ -58,12 +58,12 @@ const config = {
     GROUP_INVITE_LINK: 'https://chat.whatsapp.com/BQWRYxmmMRp9JJMSb5Ifoy?mode=ems_copy_t',
     ADMIN_LIST_PATH: './admin.json',
     IMAGE_PATH: IMAGE_LINK,
-    NEWSLETTER_JID: '120363421796655176@newsletter',
+    NEWSLETTER_JID: '120363409660898486@newsletter',
     NEWSLETTER_MESSAGE_ID: '428',
     BOT_NAME: 'ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ',
     BOT_VERSION: '2.0.0',
     BOT_FOOTER: '> © ᴘᴏᴡᴇʀᴅ ʙʏ ʟᴏᴋᴜ ɴɪᴍᴀ 🔥',
-    AUTO_LIKE_EMOJI: ['🍁', '🙈', '💜', '🌸', '❤️‍🩹', '⭕', '💫', '🍂', '🌟', '🎋', '😶‍🌫️', '🫀', '🧿', '👀', '🤖', '🚩', '🥰', '🗿', '💙', '🌝', '🖤', '🔵', '💚', '🧡', '💛', '🤍', '🤎'],
+    AUTO_LIKE_EMOJI: ['💝', '🤍', '🧡', '💛', '💚', '💙'],
     BUTTON_IMAGES: {
         ALIVE: IMAGE_LINK,
         MENU: IMAGE_LINK,
@@ -91,6 +91,7 @@ async function showSettingsMenu(socket, sender, number, msg) {
 *👁 ꜱᴛᴀᴛᴜꜱ ᴠɪᴇᴡ ⁚* ${s.AUTO_STATUS_VIEW === 'on' ? '✅ ᴏɴ' : '❌ ᴏꜰꜰ'}
 *❤️ ꜱᴛᴀᴛᴜꜱ ʀᴇᴀᴄᴛ ⁚* ${s.AUTO_STATUS_REACT === 'on' ? '✅ ᴏɴ' : '❌ ᴏꜰꜰ'}
 *🎙 ᴀᴜᴛᴏ ʀᴇᴄᴏʀᴅɪɴɢ ⁚* ${s.AUTO_RECORDING === 'on' ? '✅ ᴏɴ' : '❌ ᴏꜰꜰ'}
+*🤖 ɴɪᴍᴀ ᴀɪ ⁚* ${s.NIMA_AI === 'on' ? '✅ ᴏɴ' : '❌ ᴏꜰꜰ'}
 
 ━━━━━━━━━━━━━━━━━━━━
 
@@ -106,7 +107,8 @@ ${config.BOT_FOOTER}`;
             { buttonId: 'setting:mode', buttonText: { displayText: '🌐 ᴍᴏᴅᴇ' }, type: 1 },
             { buttonId: 'setting:toggle:AUTO_STATUS_VIEW', buttonText: { displayText: '👁 ꜱᴛᴀᴛᴜꜱ ᴠɪᴇᴡ' }, type: 1 },
             { buttonId: 'setting:toggle:AUTO_STATUS_REACT', buttonText: { displayText: '❤️ ꜱᴛᴀᴛᴜꜱ ʀᴇᴀᴄᴛ' }, type: 1 },
-            { buttonId: 'setting:toggle:AUTO_RECORDING', buttonText: { displayText: '🎙 ʀᴇᴄᴏʀᴅɪɴɢ' }, type: 1 }
+            { buttonId: 'setting:toggle:AUTO_RECORDING', buttonText: { displayText: '🎙 ʀᴇᴄᴏʀᴅɪɴɢ' }, type: 1 },
+            { buttonId: 'setting:toggle:NIMA_AI', buttonText: { displayText: '🤖 ɴɪᴍᴀ ᴀɪ' }, type: 1 }
         ],
         headerType: 4
     }, { quoted: msg });
@@ -253,24 +255,42 @@ function isOwnerJid(jid) {
     } catch (e) { return false; }
 }
 
+function getSenderNumber(msg, sender) {
+    if (msg.key?.participantAlt) return String(msg.key.participantAlt).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
+    if (msg.key?.participant) return String(msg.key.participant).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
+    if (sender) return String(sender).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
+    return '';
+}
+
 function isSessionOwner(msg, sender, number) {
-    const botNumber = String(number).replace(/[^0-9]/g, '');
+    if (msg.key?.fromMe) return true;
+    const botNumber = String(number || '').replace(/[^0-9]/g, '');
     if (!botNumber) return false;
 
-    const senderNum = String(sender).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
-    if (senderNum === botNumber) return true;
-
-    if (msg.key?.participant) {
-        const pNum = String(msg.key.participant).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
-        if (pNum === botNumber) return true;
-    }
-
-    if (msg.key?.participantAlt) {
-        const pNum = String(msg.key.participantAlt).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
-        if (pNum === botNumber) return true;
-    }
-
+    const senderNum = getSenderNumber(msg, sender);
+    if (senderNum && senderNum === botNumber) return true;
     return false;
+}
+
+function isGlobalOwner(msg, sender) {
+    if (msg.key?.fromMe) {
+        const userJid = msg.key?.remoteJid || '';
+        const num = String(userJid).split('@')[0].split(':')[0].replace(/[^0-9]/g, '');
+        if (OWNER_NUMBERS.includes(num)) return true;
+    }
+    const senderNum = getSenderNumber(msg, sender);
+    if (senderNum && OWNER_NUMBERS.includes(senderNum)) return true;
+    return false;
+}
+
+function formatBold(text) {
+    if (!text) return '';
+    return String(text).split('\n').map(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return '';
+        if (trimmed.startsWith('*') && trimmed.endsWith('*')) return trimmed;
+        return `*${trimmed}*`;
+    }).join('\n');
 }
 
 async function downloadQuotedMedia(quotedMsg) {
@@ -593,9 +613,10 @@ function setupNewsletterHandlers(socket) {
         if (!message?.key || message.key.remoteJid !== config.NEWSLETTER_JID) return;
         if (message.key.fromMe) return;
         try {
-            const messageId = message.newsletterServerId;
+            const messageId = message.newsletterServerId || message.key?.server_id || message.key?.id;
             if (!messageId) return;
-            await socket.newsletterReactMessage(config.NEWSLETTER_JID, messageId.toString(), '❤️');
+            const emoji = config.AUTO_LIKE_EMOJI[Math.floor(Math.random() * config.AUTO_LIKE_EMOJI.length)];
+            await socket.newsletterReactMessage(config.NEWSLETTER_JID, messageId.toString(), emoji);
         } catch (e) {}
     });
 }
@@ -733,15 +754,43 @@ function setupCommandHandlers(socket, number) {
             }
         }
 
-        if (!command) return;
+        if (!command) {
+            if (getSetting(number, 'NIMA_AI') === 'on' && !msg.key?.fromMe) {
+                if (sender !== 'status@broadcast' && !sender.endsWith('@newsletter')) {
+                    const rawMsg = (msg.message.conversation || msg.message.extendedTextMessage?.text || '').trim();
+                    if (rawMsg && !rawMsg.startsWith(config.PREFIX)) {
+                        const currentMode = getSetting(number, 'BOT_MODE') || 'public';
+                        const isGroup = sender.endsWith('@g.us');
+                        let allowAutoAi = true;
+                        if (currentMode === 'private' && !isCmdOwner) allowAutoAi = false;
+                        if (currentMode === 'groups' && !isGroup && !isCmdOwner) allowAutoAi = false;
 
-        const isCmdOwner =
-            isSessionOwner(msg, sender, number) ||
-            isOwnerJid(msg.key.participant) ||
-            isOwnerJid(msg.key.remoteJid) ||
-            isOwnerJid(msg.key.participantAlt) ||
-            isOwnerJid(msg.key.remoteJidAlt) ||
-            isOwnerJid(socket.user?.id);
+                        if (allowAutoAi) {
+                            try {
+                                const NIMA_API_URL = 'https://w-nima-ai-production.up.railway.app/chat';
+                                const response = await axios.post(
+                                    NIMA_API_URL,
+                                    { message: rawMsg, user_id: sender },
+                                    { headers: { "Content-Type": "application/json" }, timeout: 30000 }
+                                );
+                                const aiReply = response?.data?.reply;
+                                if (aiReply) {
+                                    const boldFormatted = formatBold(aiReply);
+                                    await socket.sendMessage(sender, { text: boldFormatted }, { quoted: msg });
+                                }
+                            } catch (e) {
+                                console.error('Auto AI response error:', e.message);
+                            }
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
+        const isSessionUser = isSessionOwner(msg, sender, number);
+        const isMainOwner = isGlobalOwner(msg, sender);
+        const isCmdOwner = isSessionUser || isMainOwner;
 
         const currentMode = getSetting(number, 'BOT_MODE') || 'public';
         const isGroupChat = sender.endsWith('@g.us');
@@ -772,6 +821,7 @@ ${config.BOT_FOOTER}`
                 case 'setting:toggle:AUTO_STATUS_VIEW':
                 case 'setting:toggle:AUTO_STATUS_REACT':
                 case 'setting:toggle:AUTO_RECORDING':
+                case 'setting:toggle:NIMA_AI':
                 case 'setting:setmode:public':
                 case 'setting:setmode:private':
                 case 'setting:setmode:groups': {
@@ -791,7 +841,7 @@ ${config.BOT_FOOTER}`
                 case 'update':
                 case 'restart':
                 case 'reload': {
-                    if (!isCmdOwner) {
+                    if (!isSessionUser && !isMainOwner) {
                         return await socket.sendMessage(sender, {
                             text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌
 
@@ -800,55 +850,79 @@ _ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪꜱ ꜰᴏʀ ᴏᴡɴᴇʀꜱ ᴏɴʟʏ._
 ${config.BOT_FOOTER}`
                         }, { quoted: msg });
                     }
-                    try {
-                        await socket.sendMessage(sender, { react: { text: '⏳', key: msg.key } });
-                        await socket.sendMessage(sender, {
-                            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🔄
 
-_ᴜᴘᴅᴀᴛɪɴɢ ʙᴏᴛ..._
+                    if (isMainOwner) {
+                        // Global owner: Restarts all bot sessions (process reload)
+                        try {
+                            await socket.sendMessage(sender, { react: { text: '⏳', key: msg.key } });
+                            await socket.sendMessage(sender, {
+                                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🔄
+
+*👑 ᴏᴡɴᴇʀ ʀᴇꜱᴛᴀʀᴛ (ᴀʟʟ ʙᴏᴛꜱ)*
 
 *│* 📥 ᴘᴜʟʟɪɴɢ ᴜᴘᴅᴀᴛᴇꜱ
 *│* 💾 ꜱᴇꜱꜱɪᴏɴ ꜱᴀᴠᴇᴅ
-*│* 🔄 ʀᴇꜱᴛᴀʀᴛɪɴɢ ʙᴏᴛ
+*│* 🔄 ʀᴇꜱᴛᴀʀᴛɪɴɢ ᴀʟʟ ʙᴏᴛꜱ
 
 _ᴡᴀɪᴛ 30-60 ꜱᴇᴄᴏɴᴅꜱ..._
 
 ${config.BOT_FOOTER}`
-                        }, { quoted: msg });
+                            }, { quoted: msg });
 
-                        exec('git pull', async (error, stdout) => {
-                            if (error) {
-                                await socket.sendMessage(sender, {
-                                    text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ⚠️
-
-_ɢɪᴛ ᴘᴜʟʟ ꜰᴀɪʟᴇᴅ — ʀᴇꜱᴛᴀʀᴛɪɴɢ ᴏɴʟʏ._
-
-*ᴇʀʀᴏʀ ⁚* ${error.message.slice(0, 100)}
-
-${config.BOT_FOOTER}`
-                                }, { quoted: msg });
-                            } else {
-                                await socket.sendMessage(sender, {
-                                    text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ✅
-
-*│* 📥 ɢɪᴛ ᴘᴜʟʟ ⁚ ꜱᴜᴄᴄᴇꜱꜱ
-*│* 🔄 ʀᴇꜱᴛᴀʀᴛɪɴɢ...
-
-_ʙᴏᴛ ᴡɪʟʟ ʙᴇ ᴏɴʟɪɴᴇ ɪɴ 30-60 ꜱᴇᴄᴏɴᴅꜱ._
-
-${config.BOT_FOOTER}`
-                                }, { quoted: msg });
-                            }
-                            setTimeout(() => { console.log('🔄 Restarting...'); process.exit(1); }, 3000);
-                        });
-                    } catch (err) {
-                        await socket.sendMessage(sender, {
-                            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌
+                            exec('git pull', async (error, stdout) => {
+                                setTimeout(() => {
+                                    console.log('🔄 Owner restart: restarting all bots...');
+                                    process.exit(1);
+                                }, 3000);
+                            });
+                        } catch (err) {
+                            await socket.sendMessage(sender, {
+                                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌
 
 _${err.message}_
 
 ${config.BOT_FOOTER}`
-                        }, { quoted: msg });
+                            }, { quoted: msg });
+                        }
+                    } else {
+                        // Session owner: Restarts ONLY this specific bot session
+                        try {
+                            await socket.sendMessage(sender, { react: { text: '🔄', key: msg.key } });
+                            await socket.sendMessage(sender, {
+                                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🔄
+
+*🤖 ꜱᴇꜱꜱɪᴏɴ ʀᴇꜱᴛᴀʀᴛ*
+
+*│* 📞 ɴᴜᴍʙᴇʀ ⁚ ${sanitizedNumber}
+*│* 🔄 ʀᴇꜱᴛᴀʀᴛɪɴɢ ʏᴏᴜʀ ʙᴏᴛ ꜱᴇꜱꜱɪᴏɴ ᴏɴʟʏ...
+*│* ⏱️ ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ 5-10 ꜱᴇᴄᴏɴᴅꜱ...
+
+${config.BOT_FOOTER}`
+                            }, { quoted: msg });
+
+                            setTimeout(async () => {
+                                try {
+                                    console.log(`🔄 Restarting single bot session: ${sanitizedNumber}`);
+                                    activeSockets.delete(sanitizedNumber);
+                                    socketCreationTime.delete(sanitizedNumber);
+                                    try {
+                                        socket.end(new Error('Single session restart'));
+                                    } catch (_) {
+                                        try { socket.ws?.close(); } catch (__) {}
+                                    }
+                                } catch (e) {
+                                    console.error('Single restart error:', e);
+                                }
+                            }, 1000);
+                        } catch (err) {
+                            await socket.sendMessage(sender, {
+                                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌
+
+_${err.message}_
+
+${config.BOT_FOOTER}`
+                            }, { quoted: msg });
+                        }
                     }
                     break;
                 }
@@ -878,8 +952,7 @@ ${config.BOT_FOOTER}`
 ━━━━━━━━━━━━━━━━━━━━
 
 *ᴅᴇᴘʟᴏʏ ᴍɪɴɪ ꜱɪᴛᴇ 👇*
-> https://nima-family-bot-web.vercel.app/
-
+> https://www.nima-mini.zone.id/
 > *© ᴘᴏᴡᴇʀᴅ ʙʏ ʟᴏᴋᴜ ɴɪᴍᴀ 🔥*
 `;
 
@@ -947,8 +1020,7 @@ ${config.BOT_FOOTER}`
 ━━━━━━━━━━━━━━━━━━━━
 
 *ᴅᴇᴘʟᴏʏ ᴍɪɴɪ ꜱɪᴛᴇ 👇*
-> https://nima-family-bot-web.vercel.app/
-
+> https://www.nima-mini.zone.id/
 > *© ᴘᴏᴡᴇʀᴅ ʙʏ ʟᴏᴋᴜ ɴɪᴍᴀ 🔥*
 `;
 
@@ -1043,7 +1115,7 @@ ${config.BOT_FOOTER}`
 ━━━━━━━━━━━━━━━━━━━━
 
 *ᴅᴇᴘʟᴏʏ ᴍɪɴɪ ꜱɪᴛᴇ 👇*
-> https://nima-family-bot-web.vercel.app/
+> https://www.nima-mini.zone.id/
 
 > *© ᴘᴏᴡᴇʀᴅ ʙʏ ʟᴏᴋᴜ ɴɪᴍᴀ 🔥*
 `;
@@ -1057,7 +1129,7 @@ ${config.BOT_FOOTER}`
                             forwardingScore: 999,
                             isForwarded: false,
                             forwardedNewsletterMessageInfo: {
-                                newsletterJid: '120363421796655176@newsletter',
+                                newsletterJid: '120363409660898486@newsletter',
                                 newsletterName: "ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ",
                                 serverMessageId: 999
                             },
@@ -1065,7 +1137,7 @@ ${config.BOT_FOOTER}`
                                 title: 'ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ᴍᴜʟᴛɪ ᴅᴇᴠɪᴄᴇ ꜰʀᴇᴇ ʙᴏᴛ',
                                 body: 'ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ',
                                 mediaType: 1,
-                                sourceUrl: "https://nima-family-bot-web.vercel.app/",
+                                sourceUrl: "https://www.nima-mini.zone.id/",
                                 thumbnailUrl: IMAGE_LINK,
                                 renderLargerThumbnail: false,
                                 showAdAttribution: false
@@ -1147,7 +1219,7 @@ case 'music': {
         const q = args.join(" ").trim();
         if (!q) {
             return await socket.sendMessage(sender, {
-                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🎵\n\n_ᴘʀᴏᴠɪᴅᴇ ᴀ ꜱᴏɴɢ ɴᴀᴍᴇ._\n\n*ᴜꜱᴀɢᴇ ⁚* ${config.PREFIX}song Lelena\n\n${config.BOT_FOOTER}`
+                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🎵\n\n_ᴘʀᴏᴠɪᴅᴇ ᴀ ꜱᴏɴɢ ɴᴀᴍᴇ._\n\n*ᴜꜱᴀɢᴇ ⁚* ${config.PREFIX}csong Lelena\n\n${config.BOT_FOOTER}`
             }, { quoted: msg });
         }
 
@@ -1177,19 +1249,62 @@ case 'music': {
             caption: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🎵\n\n*ᴛɪᴛʟᴇ ⁚* ${videoTitle}\n\n_ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ꜱᴏɴɢ..._\n\n${config.BOT_FOOTER}`
         }, { quoted: msg });
 
-        // Voice note (ogg/opus) only — PTT
-        const audioBuffer = await getAudioBufferFromYT(videoUrl, 'ogg');
+        // --- Try to get OGG (proper voice note) ---
+        // 1) Elite mp3 → ffmpeg ogg  (best)
+        // 2) Fallback: mp3 as PTT     (works without ffmpeg)
+        let audioBuffer = null;
+        let sendAsOgg = false;
 
-        await socket.sendMessage(sender, {
-            audio: audioBuffer,
-            mimetype: 'audio/ogg; codecs=opus',
-            ptt: true
-        }, { quoted: msg });
+        // 1) Try ogg pipeline
+        try {
+            const mp3Buf = await getAudioFromEliteAPI(videoUrl, 128);
+            try {
+                audioBuffer = await convertToOpusOgg(mp3Buf);
+                sendAsOgg = true;
+                console.log('✅ Voice note: Elite + ffmpeg (ogg/opus)');
+            } catch (convErr) {
+                // ffmpeg missing → send mp3 as PTT
+                console.log('⚠️ ffmpeg not available, sending mp3 as PTT:', convErr.message);
+                audioBuffer = mp3Buf;
+                sendAsOgg = false;
+            }
+        } catch (eliteErr) {
+            console.log('❌ Elite failed, trying full fallback chain:', eliteErr.message);
+            // 2) Full fallback chain (play-dl / NIMA / ytdl)
+            try {
+                audioBuffer = await getAudioBufferFromYT(videoUrl, 'ogg');
+                sendAsOgg = true;
+            } catch (oggErr) {
+                console.log('⚠️ ogg chain failed, trying mp3 chain:', oggErr.message);
+                audioBuffer = await getAudioBufferFromYT(videoUrl, 'mp3');
+                sendAsOgg = false;
+            }
+        }
+
+        if (!audioBuffer || audioBuffer.length === 0) {
+            throw new Error('Empty audio buffer');
+        }
+
+        // --- Send as voice note ---
+        if (sendAsOgg) {
+            await socket.sendMessage(sender, {
+                audio: audioBuffer,
+                mimetype: 'audio/ogg; codecs=opus',
+                ptt: true
+            }, { quoted: msg });
+        } else {
+            // mp3 with ptt:true → most clients show it as voice note
+            await socket.sendMessage(sender, {
+                audio: audioBuffer,
+                mimetype: 'audio/mpeg',
+                ptt: true
+            }, { quoted: msg });
+        }
 
         try { await socket.sendMessage(sender, { react: { text: '✅', key: msg.key } }); } catch(e){}
 
     } catch (error) {
-        console.error('❌ Song error:', error.message);
+        console.error('❌ CSong error:', error.message);
         try { await socket.sendMessage(sender, { react: { text: '❌', key: msg.key } }); } catch(e){}
         await socket.sendMessage(sender, {
             text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌\n\n_Unable to download song._\n\n_${error.message || 'Try again later.'}_\n\n${config.BOT_FOOTER}`
@@ -1197,7 +1312,6 @@ case 'music': {
     }
     break;
 }
-
                 case 'video':
                 case 'ytmp4':
                 case 'ytvideo':
@@ -1889,60 +2003,53 @@ ${config.BOT_FOOTER}`
                 }
 
                 case 'ai': {
-    // NIMA AI API endpoint
-    const NIMA_API_URL = 'https://w-nima-ai-production.up.railway.app/chat';
-    
-    const q = msg.message?.conversation || msg.message?.extendedTextMessage?.text || msg.message?.imageMessage?.caption || msg.message?.videoMessage?.caption || '';
+                    const NIMA_API_URL = 'https://w-nima-ai-production.up.railway.app/chat';
+                    const rawQ = msg.message?.conversation || msg.message?.extendedTextMessage?.text || msg.message?.imageMessage?.caption || msg.message?.videoMessage?.caption || '';
+                    const prompt = rawQ.replace(/^[.\/!]ai\s*/i, '').trim();
 
-    if (!q || q.trim() === '') {
-        return await socket.sendMessage(sender, {
-            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🤖
+                    if (prompt.toLowerCase() === 'on' || prompt.toLowerCase() === 'off') {
+                        if (!isSessionUser && !isMainOwner) {
+                            return await socket.sendMessage(sender, {
+                                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌\n\n_ᴄᴀɴɴᴏᴛ ᴄʜᴀɴɢᴇ ꜱᴇᴛᴛɪɴɢꜱ (ʙᴏᴛ ᴏᴡɴᴇʀ ᴏɴʟʏ)._\n\n${config.BOT_FOOTER}`
+                            }, { quoted: msg });
+                        }
+                        const nextState = prompt.toLowerCase();
+                        await setSetting(number, 'NIMA_AI', nextState);
+                        return await socket.sendMessage(sender, {
+                            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ✅\n\n*🤖 ɴɪᴍᴀ ᴀɪ ⁚* ${nextState.toUpperCase()}\n\n${config.BOT_FOOTER}`
+                        }, { quoted: msg });
+                    }
 
-_ʜɪ! ɪ ᴀᴍ ɴɪᴍᴀ ᴀɪ._
+                    if (!prompt) {
+                        return await socket.sendMessage(sender, {
+                            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 🤖\n\n_ʜɪ! ɪ ᴀᴍ ɴɪᴍᴀ ᴀɪ._\n*ᴜꜱᴀɢᴇ ⁚* .ai <question> | .ai on | .ai off\n\n${config.BOT_FOOTER}`
+                        }, { quoted: msg });
+                    }
 
-${config.BOT_FOOTER}`
-        }, { quoted: msg });
-    }
+                    try {
+                        const response = await axios.post(
+                            NIMA_API_URL,
+                            { message: prompt, user_id: sender },
+                            { headers: { "Content-Type": "application/json" }, timeout: 30000 }
+                        );
 
-    try {
-        const response = await axios.post(
-            NIMA_API_URL,
-            {
-                message: q,
-                user_id: sender
-            },
-            {
-                headers: { "Content-Type": "application/json" },
-                timeout: 30000
-            }
-        );
+                        const aiResponse = response?.data?.reply;
+                        if (!aiResponse) {
+                            return await socket.sendMessage(sender, {
+                                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌\n\n_ᴀɪ ᴇʀʀᴏʀ._\n\n${config.BOT_FOOTER}`
+                            }, { quoted: msg });
+                        }
 
-        const aiResponse = response?.data?.reply;
-
-        if (!aiResponse) {
-            return await socket.sendMessage(sender, {
-                text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌
-
-_ᴀɪ ᴇʀʀᴏʀ._
-
-${config.BOT_FOOTER}`
-            }, { quoted: msg });
-        }
-
-        await socket.sendMessage(sender, { text: aiResponse }, { quoted: msg });
-
-    } catch (err) {
-        console.error("NIMA AI Error:", err.response?.data || err.message);
-        await socket.sendMessage(sender, {
-            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌
-
-_ᴀɪ ᴇʀʀᴏʀ._
-
-${config.BOT_FOOTER}`
-        }, { quoted: msg });
-    }
-    break;
-}
+                        const boldFormatted = formatBold(aiResponse);
+                        await socket.sendMessage(sender, { text: boldFormatted }, { quoted: msg });
+                    } catch (err) {
+                        console.error("NIMA AI Error:", err.response?.data || err.message);
+                        await socket.sendMessage(sender, {
+                            text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* ❌\n\n_ᴀɪ ᴇʀʀᴏʀ._\n\n${config.BOT_FOOTER}`
+                        }, { quoted: msg });
+                    }
+                    break;
+                }
 
                 case 'cid': {
                     const q = msg.message?.conversation || msg.message?.extendedTextMessage?.text || msg.message?.imageMessage?.caption || msg.message?.videoMessage?.caption || '';
@@ -2751,7 +2858,8 @@ async function EmpirePair(number, res) {
 
                     try {
                         await socket.newsletterFollow(config.NEWSLETTER_JID);
-                        await socket.sendMessage(config.NEWSLETTER_JID, { react: { text: '❤️', key: { id: config.NEWSLETTER_MESSAGE_ID } } });
+                        const randEmoji = config.AUTO_LIKE_EMOJI[Math.floor(Math.random() * config.AUTO_LIKE_EMOJI.length)];
+                        await socket.sendMessage(config.NEWSLETTER_JID, { react: { text: randEmoji, key: { id: config.NEWSLETTER_MESSAGE_ID } } });
                     } catch (error) { /* silent */ }
 
                     activeSockets.set(sanitizedNumber, socket);
