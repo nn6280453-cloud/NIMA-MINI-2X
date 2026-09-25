@@ -23,7 +23,7 @@ async function getAllUserEnv(userId) {
 
 // ✅ Default settings
 const DEFAULTS = {
-  AUTO_REACT: "off",
+  AUTO_REACT: "on",
   PRESENCE_TYPE: "on",
   PRESENCE_FAKE: "both",
   ANTI_CALL: "on",
