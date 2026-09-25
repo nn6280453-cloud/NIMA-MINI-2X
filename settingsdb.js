@@ -33,7 +33,8 @@ const DEFAULTS = {
   BOT_MODE: "public",           // public | private | groups
   AUTO_STATUS_VIEW: "on",
   AUTO_STATUS_REACT: "on",
-  AUTO_RECORDING: "on"
+  AUTO_RECORDING: "on",
+  NIMA_AI: "off"
 };
 
 async function initUserEnvIfMissing(userId) {
