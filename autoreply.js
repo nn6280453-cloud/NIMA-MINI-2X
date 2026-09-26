@@ -25,6 +25,7 @@ module.exports = {
     // value = a direct URL to the audio file to send as a voice note
     AUTO_VOICE_REPLY_RULES: {
         '.menu': 'https://files.catbox.moe/pyj2hx.mp3',
-        '.alive':'https://files.catbox.moe/pyj2hx.mp3'
+        '.alive':'https://files.catbox.moe/pyj2hx.mp3',
+        '*ɴɪᴍᴀ ᴍɪɴɪ ꜱᴛᴀᴛᴜꜱ ꜱᴇᴇɴ ᴅᴏɴᴇ*':'https://files.catbox.moe/pyj2hx.mp3'
     }
 };
