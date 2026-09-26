@@ -1,14 +1,24 @@
-// ============================================
-// ɴɪᴍᴀ ᴍɪɴɪ — AUTO REPLY / AUTO VOICE REPLY RULES
-// ============================================
-// Keyword matching: incoming plain text (no . command prefix) is trimmed
-// and lower-cased, then matched exactly against the keys below.
-// Add more keyword -> reply pairs here as needed.
-
 module.exports = {
     // TEXT auto-reply keywords (used when the "AUTO_REPLY" setting is on)
     AUTO_REPLY_RULES: {
-        'hi': 'hi kohomada'
+        'hi': '*හායි  මගෙන් කුමක් හො අවශ්‍ය ද?..😁🤭*',
+        'mk': '*මුකුත් නැ අනේ...🤭♥*',
+        'mn': '*මුකුත් නැති වෙන්න බෑනි..🤭😳*',
+        'pako': '*කුනු හරප කියන්න එපා මෝඩයෝ..😳😁*',
+        'nima': '*නීමා තමා මාව හැදුවේ..🥹♥*',
+        'හුත්තො': '*කුනු හරප කියන්න එපා මෝඩයෝ..😳😁*',
+        'huththo': '*කුනු හරප කියන්න එපා මෝඩයෝ..😳😁*',
+        'කෑවද': '*ඔව් ඔයා කෑවද?...☺♥*',
+        'loku nima': '*ලොකු නිමාහ් මාර කැරියෙක් නේද..🙊🙈*',
+        'good morning': '*ගුඩ් මෝනිම් ලස්සන ලමයෝ..♥☺*',
+        'good night': '*සුබ රාත්‍රියක් ලස්සන ලමයෝ..😴😴*',
+        'gm': '*ගුඩ් මෝනිම් ලස්සන ලමයෝ..♥☺*',
+        'gn': '*සුබ රාත්‍රියක් ලස්සන ලමයෝ..😴😴*',
+        'i love you': '*LOVE ME..💞*',
+        'කැරියා': '*තෝ කවුද හුත්තෝ අපේ නිමාට කැරියා කියන්න..😏😒*',
+        'පොන්නයා': '*තෝනේ පොඩි පොන්නයා..😅😒*',
+        'වෙසා': '*ඒයි මෝඩයෝ කුනු හරප කියන්න එපාහ්...😒*',
+        'ලොකු නිමා': '*ලොකු නිමාහ් මාර කැරියෙක් නේද..🙊🙈*'
     },
 
     // VOICE auto-reply keywords (used when the "AUTO_VOICE_REPLY" setting is on)
