@@ -24,6 +24,7 @@ module.exports = {
     // VOICE auto-reply keywords (used when the "AUTO_VOICE_REPLY" setting is on)
     // value = a direct URL to the audio file to send as a voice note
     AUTO_VOICE_REPLY_RULES: {
-        'menu': 'https://files.catbox.moe/pyj2hx.mp3'
+        '.menu': 'https://files.catbox.moe/pyj2hx.mp3',
+        '.alive':'https://files.catbox.moe/pyj2hx.mp3'
     }
 };
