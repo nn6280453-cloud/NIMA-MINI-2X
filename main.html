@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIMAH FAMILY BOT 1V</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000308;
+      color: #00f0ff;
+      position: relative;
+      padding: 20px;
+    }
+
+    /* ===== Animated Background ===== */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.18), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(180, 0, 255, 0.18), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.12), transparent 60%);
+      filter: blur(70px);
+      animation: gradientPulse 10s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes gradientPulse {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    /* ===== Grid Overlay ===== */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+      background-size: 55px 55px;
+      z-index: 1;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      -webkit-mask-image: radial-gradient(circle at center, black, transparent 78%);
+    }
+
+    /* ===== Particles ===== */
+    .particles {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background: #00f0ff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00f0ff;
+      animation: floatUp linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(110vh) scale(0.3); opacity: 0; }
+      10% { opacity: 0.9; }
+      90% { opacity: 0.9; }
+      100% { transform: translateY(-15vh) scale(1.3); opacity: 0; }
+    }
+
+    /* ===== Main Card ===== */
+    .box {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      padding: 42px 30px 36px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(5, 15, 25, 0.96), rgba(0, 5, 15, 0.99));
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow:
+        0 0 0 1px rgba(0, 240, 255, 0.22),
+        0 0 50px rgba(0, 240, 255, 0.18),
+        0 25px 70px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      text-align: center;
+      z-index: 3;
+      animation: cardFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ===== Top Glow Bar ===== */
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 12%;
+      width: 76%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00f0ff, #b400ff, transparent);
+      border-radius: 2px;
+      box-shadow: 0 0 20px #00f0ff;
+      animation: topGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes topGlow {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== Badge ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 16px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #00f0ff;
+      margin-bottom: 22px;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    }
+
+    .badge .dot {
+      width: 7px;
+      height: 7px;
+      background: #00ff88;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ff88;
+      animation: dotPulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.5); }
+    }
+
+    /* ===== Headings ===== */
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #00f0ff 0%, #4dc8ff 40%, #b400ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.45));
+      line-height: 1.25;
+    }
+
+    h5 {
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: #6b8fa0;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    h5 i {
+      color: #00f0ff;
+      font-size: 0.7rem;
+      text-shadow: 0 0 8px #00f0ff;
+    }
+
+    /* ===== Description ===== */
+    .desc {
+      font-size: 0.85rem;
+      color: #8aa8b8;
+      margin-bottom: 18px;
+      font-weight: 300;
+      letter-spacing: 0.3px;
+    }
+
+    /* ===== Input Container ===== */
+    .input-container {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      height: 58px;
+      margin-top: 10px;
+      border-radius: 16px;
+      background: rgba(0, 240, 255, 0.045);
+      border: 1.5px solid rgba(0, 240, 255, 0.28);
+      transition: all 0.35s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .input-container:focus-within {
+      border-color: #00f0ff;
+      background: rgba(0, 240, 255, 0.07);
+      box-shadow:
+        0 0 0 4px rgba(0, 240, 255, 0.1),
+        0 0 30px rgba(0, 240, 255, 0.35);
+    }
+
+    /* Prefix icon */
+    .input-icon {
+      display: flex;
+      align-items: center;
+      padding: 0 14px 0 18px;
+      color: #00f0ff;
+      font-size: 1rem;
+      opacity: 0.75;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+      flex: 1;
+      min-width: 0;
+      padding: 0 8px 0 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.6px;
+    }
+
+    input::placeholder {
+      color: #4a6675;
+      font-weight: 300;
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    #submit {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 26px;
+      margin: 4px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00f0ff 0%, #0090ff 60%, #0066ff 100%);
+      color: #001520;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow:
+        0 4px 20px rgba(0, 240, 255, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    #submit::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.6s ease;
+    }
+
+    #submit:hover::after {
+      left: 100%;
+    }
+
+    #submit:hover {
+      background: linear-gradient(135deg, #00ffcc 0%, #00f0ff 60%, #0090ff 100%);
+      box-shadow:
+        0 6px 30px rgba(0, 240, 255, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    #submit:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    #submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #submit i {
+      font-size: 0.8rem;
+    }
+
+    /* ===== Result Box ===== */
+    #pair {
+      margin-top: 22px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #pair a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #8aa8b8;
+      background: rgba(0, 240, 255, 0.05);
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      width: 100%;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    /* ===== Copy Button ===== */
+    #copy {
+      cursor: pointer !important;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.14), rgba(180, 0, 255, 0.14)) !important;
+      border: 1.5px solid rgba(0, 240, 255, 0.5) !important;
+      color: #00f0ff !important;
+      font-weight: 700 !important;
+      font-size: 0.88rem !important;
+      letter-spacing: 1.5px;
+      padding: 16px 18px !important;
+      animation: copyGlow 2.2s ease-in-out infinite;
+      flex-direction: column;
+      gap: 4px !important;
+    }
+
+    @keyframes copyGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.4),
+                    inset 0 0 20px rgba(0, 240, 255, 0.05);
+      }
+      50% {
+        box-shadow: 0 0 25px 5px rgba(0, 240, 255, 0.3),
+                    inset 0 0 25px rgba(0, 240, 255, 0.12);
+      }
+    }
+
+    #copy:hover {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.28), rgba(180, 0, 255, 0.28)) !important;
+      border-color: #00f0ff !important;
+      transform: translateY(-2px);
+    }
+
+    #copy span {
+      color: #fff !important;
+      font-weight: 900;
+      letter-spacing: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.15rem;
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
+    }
+
+    /* ===== Loader ===== */
+    .loader {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0, 240, 255, 0.3);
+      border-top-color: #00f0ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== Sound Button ===== */
+    .sound-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.22), rgba(0, 100, 255, 0.22));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow:
+        0 0 22px rgba(0, 240, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .sound-btn:hover {
+      transform: scale(1.1) rotate(8deg);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.45), rgba(0, 100, 255, 0.45));
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
+    }
+
+    .sound-btn:active {
+      transform: scale(0.95);
+    }
+
+    .sound-btn i {
+      color: #00f0ff;
+      font-size: 19px;
+      text-shadow: 0 0 12px #00f0ff;
+    }
+
+    /* ===== Footer Credit ===== */
+    .footer-credit {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      font-size: 0.65rem;
+      color: #3a5563;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      z-index: 10;
+      font-weight: 300;
+    }
+
+    .footer-credit span {
+      color: #00f0ff;
+      font-weight: 600;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    /* ===== Mobile Responsive ===== */
+    @media (max-width: 520px) {
+      body { padding: 16px; }
+      .box {
+        padding: 34px 22px 30px;
+        border-radius: 22px;
+      }
+      h2 { font-size: 1.3rem; letter-spacing: 1.5px; }
+      h5 { font-size: 0.62rem; letter-spacing: 1.8px; margin-bottom: 22px; }
+      .desc { font-size: 0.8rem; }
+      .input-container { height: 56px; }
+      input { font-size: 0.95rem; }
+      #submit { padding: 0 20px; font-size: 0.78rem; letter-spacing: 1.2px; }
+      .footer-credit { display: none; }
+      .sound-btn { bottom: 18px; right: 18px; width: 48px; height: 48px; }
+      #copy span { font-size: 1rem; letter-spacing: 3px; }
+    }
+
+    @media (max-width: 360px) {
+      .input-icon { display: none; }
+      #submit { padding: 0 16px; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Effects -->
+  <div class="bg-gradient"></div>
+  <div class="grid-overlay"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- Footer Credit -->
+  <div class="footer-credit">Powered by <span>NIMA FAMILY</span></div>
+
+  <!-- Sound Toggle -->
+  <div class="sound-btn" id="soundBtn" title="Toggle sound">
+    <i class="fas fa-volume-mute" id="soundIcon"></i>
+  </div>
+
+  <!-- Main Card -->
+  <div class="box">
+    <div class="badge">
+      <span class="dot"></span>
+      <span>System Online</span>
+    </div>
+
+    <h2>NIMAH FAMILY BOT 1V</h2>
+    <h5>
+      <i class="fas fa-crown"></i>
+      Programer Cyber Loku Nima
+      <i class="fas fa-gem"></i>
+    </h5>
+
+    <p class="desc">Enter your WhatsApp number with country code</p>
+
+    <div class="input-container">
+      <div class="input-icon">
+        <i class="fas fa-phone"></i>
+      </div>
+      <input placeholder="9475xxxxxxx" type="number" id="number" inputmode="numeric">
+      <button id="submit" type="button">
+        Submit
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+
+    <div id="pair"></div>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="bgAudio" loop>
+    <source src="https://github.com/Nimsara0000/Song/raw/refs/heads/main/Enter_the_Void__Innervoix_Remix_(48k).m4a" type="audio/mp4">
+  </audio>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    const a = document.getElementById("pair");
+    const b = document.getElementById("submit");
+    const c = document.getElementById("number");
+    const audio = document.getElementById("bgAudio");
+    const soundBtn = document.getElementById("soundBtn");
+    const soundIcon = document.getElementById("soundIcon");
+
+    // ===== Sound toggle =====
+    soundBtn.addEventListener("click", async () => {
+      try {
+        if (audio.paused) {
+          await audio.play();
+          soundIcon.classList.remove("fa-volume-mute");
+          soundIcon.classList.add("fa-volume-up");
+        } else {
+          audio.pause();
+          soundIcon.classList.remove("fa-volume-up");
+          soundIcon.classList.add("fa-volume-mute");
+        }
+      } catch (e) {
+        console.log("Audio error:", e);
+      }
+    });
+
+    // Try autoplay (browsers may block)
+    window.addEventListener("load", async () => {
+      try {
+        await audio.play();
+        soundIcon.classList.remove("fa-volume-mute");
+        soundIcon.classList.add("fa-volume-up");
+      } catch (e) {
+        // Autoplay blocked — icon stays muted
+        soundIcon.classList.add("fa-volume-mute");
+      }
+    });
+
+    // ===== Copy code =====
+    async function Copy() {
+      const obj = document.getElementById("copy");
+      if (!obj) return;
+      const text = obj.querySelector("span").innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = obj.innerHTML;
+        obj.innerHTML = '✅ COPIED';
+        setTimeout(() => { obj.innerHTML = original; }, 1000);
+      } catch (e) {
+        console.error("Copy failed:", e);
+      }
+    }
+
+    // ===== Submit =====
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const raw = (c.value || "").replace(/[^0-9]/g, "");
+
+      if (!raw || raw.length < 8) {
+        a.innerHTML = '<a>⚠️ Please enter a valid WhatsApp number</a>';
+        return;
+      }
+
+      c.value = "+" + raw;
+      a.innerHTML = '<a><span class="loader"></span>Please wait...</a>';
+      b.disabled = true;
+
+      try {
+        const { data } = await axios(`/code?number=${raw}`);
+        const code = data.code || data.error || "Service Unavailable";
+        a.innerHTML = `<a id="copy" onclick="Copy()">YOUR PAIRING CODE<span>${code}</span></a>`;
+      } catch (err) {
+        console.error(err);
+        a.innerHTML = '<a>❌ Service Unavailable. Please try again.</a>';
+      } finally {
+        b.disabled = false;
+      }
+    });
+
+    // ===== Enter key =====
+    c.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        b.click();
+      }
+    });
+
+    // ===== Particles =====
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 55; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('particle');
+      dot.style.left = Math.random() * 100 + 'vw';
+      dot.style.animationDuration = (6 + Math.random() * 12) + 's';
+      dot.style.animationDelay = Math.random() * 10 + 's';
+      const size = 1 + Math.random() * 2.5;
+      dot.style.width = size + 'px';
+      dot.style.height = size + 'px';
+      container.appendChild(dot);
+    }
+  </script>
+</body>
+</html>
