@@ -56,7 +56,7 @@ const {
 const config = {
     PREFIX: '.',
     MAX_RETRIES: 3,
-    GROUP_INVITE_LINK: 'https://chat.whatsapp.com/ItLfZJFCff9I6U3JuPOdcMt',
+    GROUP_INVITE_LINK: 'https://chat.whatsapp.com/K4V8721Jlar3shf8HzEZsP',
     ADMIN_LIST_PATH: './admin.json',
     IMAGE_PATH: IMAGE_LINK,
     NEWSLETTER_JID: '120363409660898486@newsletter',
