@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@zanta/baileys": "^1.0.0",
+    "fixo-baileys": "^1.0.1",
     "@distube/ytdl-core": "^4.16.6",
     "@iamtraction/play-dl": "latest",
     "fb-downloader-scrapper": "^1.0.1",
