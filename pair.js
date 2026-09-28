@@ -48,8 +48,7 @@ const {
     Browsers,
     jidNormalizedUser,
     downloadContentFromMessage
-} = require('@zanta/baileys');
-
+} = require('fixo-baileys');
 // ============================================
 // CONFIG
 // ============================================
