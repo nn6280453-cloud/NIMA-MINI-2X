@@ -34,7 +34,9 @@ const DEFAULTS = {
   AUTO_STATUS_VIEW: "on",
   AUTO_STATUS_REACT: "on",
   AUTO_RECORDING: "on",
-  AI_MODE: "off"
+  AI_MODE: "off",
+  // ===== Channel Status =====
+  STATUS_CHANNEL: ""            // <channelJid>@newsletter — .setchannel එකෙන් save වෙනවා
 };
 
 async function initUserEnvIfMissing(userId) {
