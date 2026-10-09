@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "fixo-baileys": "^1.0.7",
+    "@dexterid/baileys": "^2.2.9",
+    "audio-decode": "^2.2.2",
     "@distube/ytdl-core": "^4.16.6",
     "@iamtraction/play-dl": "latest",
     "fb-downloader-scrapper": "^1.0.1",
