@@ -29,7 +29,8 @@
     "mongodb": "^7.6.0",
     "uuid": "^14.0.2",
     "axios": "^1.20.0",
-    "moment-timezone": "^0.6.3"
+    "moment-timezone": "^0.6.3",
+    "ffmpeg-static": "^5.2.0"
   },
   "engines": {
     "node": ">=20.x"
