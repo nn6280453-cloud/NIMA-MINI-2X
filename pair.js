@@ -49,7 +49,7 @@ const {
     Browsers,
     jidNormalizedUser,
     downloadContentFromMessage
-} = require('@dexterid/baileys');
+} = require('fixo-baileys');
 // ============================================
 // CONFIG
 // ============================================
