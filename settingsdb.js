@@ -28,6 +28,7 @@ const DEFAULTS = {
   PRESENCE_FAKE: "both",
   ANTI_CALL: "on",
   ANTI_DELETE: "on",
+  CONNECT_MSG: "on",            // connect message ON/OFF (.settings → CONNECT MSG)
   CREATE_NB: null,
   // ===== New settings =====
   BOT_MODE: "public",           // public | private | groups
