@@ -30,12 +30,20 @@
     "uuid": "^14.0.2",
     "axios": "^1.20.0",
     "moment-timezone": "^0.6.3",
-    "ffmpeg-static": "^5.2.0"
+    "ffmpeg-static": "^5.2.0",
+    "cheerio": "^1.0.0",
+    "cloudscraper": "^4.6.0"
   },
   "engines": {
     "node": ">=20.x"
   },
-  "keywords": ["whatsapp", "bot", "multi-device", "baileys", "shala-md"],
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "multi-device",
+    "baileys",
+    "shala-md"
+  ],
   "author": "dinu",
   "license": "MIT"
 }
