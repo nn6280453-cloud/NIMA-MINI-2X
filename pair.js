@@ -2763,7 +2763,7 @@ ${config.BOT_FOOTER}`
 
                         await socket.sendMessage(sender, { text: `*ɴɪᴍᴀ ꜰᴀᴍɪʟʏ ꜰʀᴇᴇ ʙᴏᴛ* 📘\n\n_වීඩියෝව බාගත වෙමින් පවතී..._\n\n${config.BOT_FOOTER}` }, { quoted: msg });
 
-                        const apiUrl = 'https://fb-video-api-hh93.onrender.com/download';
+                        const apiUrl = 'https://nima-fb-api.up.railway.app/download';
                         const response = await axios.post(apiUrl, { url: fbUrl }, { responseType: 'arraybuffer', timeout: 90000 });
                         const videoBuffer = Buffer.from(response.data);
 
