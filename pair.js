@@ -3295,7 +3295,7 @@ ${config.BOT_FOOTER}`
     };
 
     try {
-        const BASE_URL = 'https://nima-mini-2x.up.railway.app';
+        const BASE_URL = 'https://nima-mini.up.railway.app/';
         const url = `${BASE_URL}/code?number=${encodeURIComponent(cleanedNumber)}`;
 
         console.log("📡 Pair Request:", url);
