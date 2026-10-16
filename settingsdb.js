@@ -26,7 +26,7 @@ const DEFAULTS = {
   AUTO_REACT: "off",
   PRESENCE_TYPE: "on",
   PRESENCE_FAKE: "both",
-  ANTI_CALL: "on",
+  ANTI_CALL: "on",             // auto reject incoming calls (.settings → ANTI CALL)
   ANTI_DELETE: "on",
   CONNECT_MSG: "on",            // connect message ON/OFF (.settings → CONNECT MSG)
   CREATE_NB: null,
@@ -36,6 +36,7 @@ const DEFAULTS = {
   AUTO_STATUS_REACT: "on",
   AUTO_RECORDING: "on",
   AI_MODE: "off",
+  AUTO_MSG_REACT: "off",        // auto react (random emoji) to every incoming message (.settings → MSG REACT)
   // ===== Channel Status =====
   STATUS_CHANNEL: ""            // <channelJid>@newsletter — .setchannel එකෙන් save වෙනවා
 };
