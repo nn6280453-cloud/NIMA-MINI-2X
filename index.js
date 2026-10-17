@@ -1,13 +1,19 @@
-const express = require('express');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { EventEmitter } from 'events';
+import bodyParser from 'body-parser';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const path = require('path');
-const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8000;
 
 // ============================================
 // Global settings
 // ============================================
-require('events').EventEmitter.defaultMaxListeners = 500;
+EventEmitter.defaultMaxListeners = 500;
 
 // ============================================
 // Body Parser (routes වලට උඩින් තියෙන්න ඕන!)
@@ -17,8 +23,9 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 // ============================================
 // Load pair.js router
+// (dynamic import so it loads AFTER the settings above, same as before)
 // ============================================
-let code = require('./pair');
+const { default: code } = await import('./pair.js');
 
 // ============================================
 // Mount pair router at /code
@@ -72,4 +79,4 @@ Don't Forget To Give Star 📡⌛⏳✅
 Server running on http://localhost:${PORT}`);
 });
 
-module.exports = app;
+export default app;
