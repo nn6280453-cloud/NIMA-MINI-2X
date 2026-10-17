@@ -1,32 +1,33 @@
 // settingsdb.js
-const axios = require('axios');
+import axios from 'axios';
 
 const BASE_URL = 'https://shriiy-default-rtdb.asia-southeast1.firebasedatabase.app';
 
-async function updateUserEnv(key, value, userId) {
+export async function updateUserEnv(key, value, userId) {
   if (!userId) throw new Error("User ID missing");
   const res = await axios.put(`${BASE_URL}/${userId}/${key}.json`, JSON.stringify(value));
   return res.data;
 }
 
-async function getUserEnv(key, userId) {
+export async function getUserEnv(key, userId) {
   if (!userId) throw new Error("User ID missing");
   const res = await axios.get(`${BASE_URL}/${userId}/${key}.json`);
   return res.data;
 }
 
-async function getAllUserEnv(userId) {
+export async function getAllUserEnv(userId) {
   if (!userId) throw new Error("User ID missing");
   const res = await axios.get(`${BASE_URL}/${userId}.json`);
   return res.data || {};
 }
 
 // ✅ Default settings
-const DEFAULTS = {
+export const DEFAULTS = {
   AUTO_REACT: "off",
   PRESENCE_TYPE: "on",
   PRESENCE_FAKE: "both",
   ANTI_CALL: "on",             // auto reject incoming calls (.settings → ANTI CALL)
+  AUTO_ANSWER: "off",           // auto answer calls with the welcome audio, then hang up (.settings → AUTO ANSWER)
   ANTI_DELETE: "on",
   CONNECT_MSG: "on",            // connect message ON/OFF (.settings → CONNECT MSG)
   CREATE_NB: null,
@@ -41,7 +42,7 @@ const DEFAULTS = {
   STATUS_CHANNEL: ""            // <channelJid>@newsletter — .setchannel එකෙන් save වෙනවා
 };
 
-async function initUserEnvIfMissing(userId) {
+export async function initUserEnvIfMissing(userId) {
   if (!userId) {
     console.error("❌ User ID is missing");
     return;
@@ -62,11 +63,3 @@ async function initUserEnvIfMissing(userId) {
     }
   }
 }
-
-module.exports = {
-  updateUserEnv,
-  getUserEnv,
-  getAllUserEnv,
-  initUserEnvIfMissing,
-  DEFAULTS
-};
