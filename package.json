@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "WhatsApp Bot with Multi-Number Support",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "fixo-baileys": "^1.0.7",
+    "@japofc/baileys": "^2.4.7-new",
     "@distube/ytdl-core": "^4.16.6",
     "@iamtraction/play-dl": "latest",
     "fb-downloader-scrapper": "^1.0.1",
@@ -33,7 +34,9 @@
     "moment-timezone": "^0.6.3",
     "ffmpeg-static": "^5.2.0",
     "cheerio": "^1.0.0",
-    "cloudscraper": "^4.6.0"
+    "cloudscraper": "^4.6.0",
+    "@roamhq/wrtc": "latest",
+    "file-type": "^16.5.4"
   },
   "engines": {
     "node": ">=20.x"
