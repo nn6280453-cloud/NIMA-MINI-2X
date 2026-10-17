@@ -1,10 +1,10 @@
 // settings.js
-const { getAllUserEnv, updateUserEnv, DEFAULTS } = require('./settingsdb');
+import { getAllUserEnv, updateUserEnv, DEFAULTS } from './settingsdb.js';
 
 // ✅ Per-user cache (multi-user safe)
 const userCache = new Map();
 
-async function initEnvsettings(userId) {
+export async function initEnvsettings(userId) {
   try {
     const data = await getAllUserEnv(userId);
     const merged = { ...DEFAULTS, ...data };
@@ -20,7 +20,7 @@ async function initEnvsettings(userId) {
   }
 }
 
-function getSetting(userId, key) {
+export function getSetting(userId, key) {
   if (!userId) return null;
   let s = userCache.get(userId);
   if (!s) {
@@ -30,7 +30,7 @@ function getSetting(userId, key) {
   return s[key] ?? DEFAULTS[key] ?? null;
 }
 
-async function setSetting(userId, key, value) {
+export async function setSetting(userId, key, value) {
   if (!userId) return;
   let s = userCache.get(userId) || { ...DEFAULTS, CREATE_NB: userId };
   s[key] = value;
@@ -42,19 +42,11 @@ async function setSetting(userId, key, value) {
   }
 }
 
-function getFullSettings(userId) {
+export function getFullSettings(userId) {
   if (!userId) return { ...DEFAULTS };
   return userCache.get(userId) || { ...DEFAULTS, CREATE_NB: userId };
 }
 
-function updateSetting(userId, key, value) {
+export function updateSetting(userId, key, value) {
   return setSetting(userId, key, value);
 }
-
-module.exports = {
-  initEnvsettings,
-  getSetting,
-  setSetting,
-  updateSetting,
-  getFullSettings
-};
