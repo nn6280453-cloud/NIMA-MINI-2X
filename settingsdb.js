@@ -37,30 +37,40 @@ const DEFAULTS = {
   AUTO_RECORDING: "on",
   AI_MODE: "off",
   AUTO_MSG_REACT: "off",        // auto react (random emoji) to every incoming message (.settings → MSG REACT)
+  AUTO_SAVE_CONTACT: "off",     // save unsaved numbers (msg/call) with their WhatsApp name (.settings → AUTO SAVE CONTACT)
   // ===== Channel Status =====
   STATUS_CHANNEL: ""            // <channelJid>@newsletter — .setchannel එකෙන් save වෙනවා
 };
 
+// ⚡ faster: ONE read for all keys, then missing keys are written in parallel
 async function initUserEnvIfMissing(userId) {
   if (!userId) {
     console.error("❌ User ID is missing");
     return;
   }
 
-  for (const key in DEFAULTS) {
+  let existing = {};
+  try {
+    existing = await getAllUserEnv(userId);
+  } catch (e) {
+    console.error("❌ Failed to read settings:", e.message);
+    return;
+  }
+
+  const missing = Object.keys(DEFAULTS).filter(
+    (key) => existing[key] === null || existing[key] === undefined
+  );
+
+  await Promise.all(missing.map(async (key) => {
     let defVal = DEFAULTS[key];
     if (key === 'CREATE_NB') defVal = userId;
-
     try {
-      const current = await getUserEnv(key, userId);
-      if (current === null || current === undefined) {
-        await updateUserEnv(key, defVal, userId);
-        console.log(`✅ Initialized [${userId}] ${key} = ${defVal}`);
-      }
+      await updateUserEnv(key, defVal, userId);
+      console.log(`✅ Initialized [${userId}] ${key} = ${defVal}`);
     } catch (e) {
       console.error(`❌ Failed to init ${key}:`, e.message);
     }
-  }
+  }));
 }
 
 module.exports = {
