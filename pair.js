@@ -31,7 +31,7 @@ const NIMA_YT_API = process.env.NIMA_YT_API_URL || 'https://nima-song-api-nocach
 // ============================================
 // IMAGE LINK
 // ============================================
-const IMAGE_LINK = 'https://files.catbox.moe/gbe1sh.jpg';
+const IMAGE_LINK = 'https://i.postimg.cc/D0Lrrt70/file-00000000f3d08211929e8eec527f8aa9.png';
 
 // ============================================
 // OWNER NUMBERS
